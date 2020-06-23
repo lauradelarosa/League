@@ -35,7 +35,7 @@ class LeagueFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         context?.let {
-            component = it.app.component.plusLeague(LeagueModule())
+            //component = it.app.component.plusLeague(LeagueModule())
         }
         dataBindingView.lifecycleOwner = this.viewLifecycleOwner
     }

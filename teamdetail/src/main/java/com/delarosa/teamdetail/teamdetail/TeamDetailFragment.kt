@@ -38,7 +38,7 @@ class TeamDetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         dataBindingView.lifecycleOwner = this.viewLifecycleOwner
         activity?.let {
-            component = it.app.component.plusDetail(TeamDetailModule(it.intent.getStringExtra(DETAIL_CODE)))
+            //component = it.app.component.plusDetail(TeamDetailModule(it.intent.getStringExtra(DETAIL_CODE)))
         }
     }
 

@@ -39,7 +39,7 @@ class TeamFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         dataBindingView.lifecycleOwner = this.viewLifecycleOwner
         activity?.let {
-            component = it.app.component.plusTeam(TeamModule(it.intent.getStringExtra(LEAGUE_CODE)))
+           // component = it.app.component.plusTeam(TeamModule(it.intent.getStringExtra(LEAGUE_CODE)))
         }
     }
 
