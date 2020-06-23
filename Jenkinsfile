@@ -6,11 +6,6 @@ pipeline {
         sh './gradlew clean --stacktrace'
       }
     }
-    stage('Validate') {
-          steps {
-            sh ' ./gradlew compileDemoDebugKotlin --stacktrace'
-          }
-     }
     stage('Unit tests usecases') {
       steps {
         sh './gradlew usecases:clean data:testDebugUnitTest --stacktrace'
