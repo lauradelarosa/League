@@ -8,17 +8,17 @@ pipeline {
     }
     stage('Unit tests usecases') {
       steps {
-        sh './gradlew usecases:clean data:testDebugUnitTest --stacktrace'
+        sh './gradlew usecases:clean usecases:test --stacktrace'
       }
     }
     stage('Unit Test domain') {
       steps {
-        sh './gradlew domain:clean domain:testDebugUnitTest --stacktrace'
+        sh './gradlew domain:clean domain:test --stacktrace'
       }
     }
     stage('Unit Test data') {
         steps {
-         sh './gradlew data:clean domain:testDebugUnitTest --stacktrace'
+         sh './gradlew data:clean data:test --stacktrace'
         }
      }
   }
