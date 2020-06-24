@@ -8,11 +8,9 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:4.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.3'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
@@ -42,9 +40,14 @@ allprojects {
         ]
 
         androidKaptLibs = [
-                room            : 'android.arch.persistence.room:compiler:3.5.2',
-                glideCompiler   : 'com.github.bumptech.glide:compiler:4.9.0',
-                daggerCompiler  : 'com.google.dagger:dagger-compiler:2.27'
+                room          : 'android.arch.persistence.room:compiler:3.5.2',
+                glideCompiler : 'com.github.bumptech.glide:compiler:4.9.0',
+                daggerCompiler: 'com.google.dagger:dagger-compiler:2.27'
+        ]
+
+        firebaseLibs = [
+                config   : 'com.google.firebase:firebase-config-ktx:19.1.4',
+                analytics: 'com.google.firebase:firebase-analytics-ktx:17.4.3'
         ]
 
         kotlinLibs = [
@@ -79,7 +82,23 @@ allprojects {
                 mockWebServer: 'com.squareup.okhttp3:mockwebserver:4.2.1',
                 okhttpIdling : 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
         ]
-        compileSdkVersion = 29
+
+        features = [
+                project(":splash"),
+                project(":team"),
+                project(":teamdetail"),
+                project(":league")
+        ]
+
+        layers = [
+                project(":data"),
+                project(":domain"),
+                project(":usecases")
+        ]
+
+        common =[
+                project(":common")
+        ]
     }
 }
 

@@ -1,10 +1,7 @@
 apply plugin: 'com.android.library'
 apply from: "$rootProject.projectDir/common.gradle"
 
-
-
 dependencies {
-    implementation project(":common")
-    implementation 'com.google.firebase:firebase-config-ktx:19.1.4'
-    implementation 'com.google.firebase:firebase-analytics-ktx:17.4.3'
+    implementation layers
+    implementation common
 }

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 apply from: "$rootProject.projectDir/common.gradle"
 apply plugin: 'com.google.gms.google-services'
 
@@ -14,24 +13,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    dataBinding {
-        enabled = true
-    }
-
 }
 dependencies {
-    implementation project(":league")
-    implementation project(":team")
-    implementation project(":common")
-    implementation project(":teamdetail")
-    implementation project(":splash")
+    implementation features
+    implementation common
 }
-repositories {
-    mavenCentral()
-}
-
