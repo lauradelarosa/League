@@ -4,17 +4,13 @@ package com.delarosa.team.di
 
 import com.delarosa.common.utils.getViewModel
 import com.delarosa.data.repository.TeamRepository
-
 import com.delarosa.team.team.TeamFragment
 import com.delarosa.team.team.TeamViewModel
 import com.delarosa.usecases.GetTeams
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Named
-import javax.inject.Singleton
 
 const val LEAGUE_CODE = "league_code"
 

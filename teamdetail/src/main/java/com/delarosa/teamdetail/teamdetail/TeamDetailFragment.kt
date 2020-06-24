@@ -9,14 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.delarosa.common.di.ComponentProvider
-import com.delarosa.common.utils.app
-import com.delarosa.common.utils.getViewModel
 import com.delarosa.common.utils.startLink
 import com.delarosa.teamdetail.databinding.FragmentTeamDetailBinding
 import com.delarosa.teamdetail.di.DaggerTeamDetailComponent
-import com.delarosa.teamdetail.di.TeamDetailComponent
 import com.delarosa.teamdetail.di.TeamDetailModule
-import com.delarosa.teamdetail.teamdetail.TeamDetailViewModel.Companion.DETAIL_CODE
 import kotlinx.android.synthetic.main.fragment_team_detail.*
 import javax.inject.Inject
 

@@ -5,7 +5,6 @@ import com.delarosa.common.di.CommonComponent
 import com.delarosa.common.di.ComponentProvider
 import com.delarosa.common.di.DaggerCommonComponent
 import com.delarosa.common.utils.isNull
-import java.lang.NullPointerException
 
 class App : Application(), ComponentProvider {
 

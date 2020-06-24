@@ -10,8 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.delarosa.common.di.ComponentProvider
-import com.delarosa.common.utils.*
 import com.delarosa.common.utils.Target
+import com.delarosa.common.utils.canNavigate
+import com.delarosa.common.utils.navigateUriWithDefaultOptions
 import com.delarosa.league.databinding.FragmentLeagueBinding
 import com.delarosa.league.di.DaggerLeagueComponent
 import com.delarosa.league.di.LeagueModule

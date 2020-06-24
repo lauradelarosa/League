@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.delarosa.common.App
-import com.delarosa.common.di.CommonComponent
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlin.properties.Delegates
 

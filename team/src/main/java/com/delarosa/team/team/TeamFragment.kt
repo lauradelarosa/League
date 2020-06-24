@@ -15,7 +15,6 @@ import com.delarosa.common.utils.canNavigate
 import com.delarosa.common.utils.navigateUriWithDefaultOptions
 import com.delarosa.team.databinding.FragmentTeamBinding
 import com.delarosa.team.di.DaggerTeamComponent
-import com.delarosa.team.di.TeamComponent
 import com.delarosa.team.di.TeamModule
 import kotlinx.android.synthetic.main.fragment_team.*
 import javax.inject.Inject

@@ -1,10 +1,8 @@
 package com.delarosa.team.team
 
 
-import android.content.Context
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.delarosa.common.App
 import com.delarosa.domain.Team
 
 @BindingAdapter("items")

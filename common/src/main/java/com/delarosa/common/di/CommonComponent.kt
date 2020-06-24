@@ -1,7 +1,6 @@
 package com.delarosa.common.di
 
 import android.app.Application
-import androidx.room.RoomDatabase
 import com.delarosa.common.data.server.endpoints.EventService
 import com.delarosa.common.data.server.endpoints.LeagueService
 import com.delarosa.common.data.server.endpoints.TeamService
@@ -11,7 +10,6 @@ import com.delarosa.data.repository.LeagueRepository
 import com.delarosa.data.repository.TeamRepository
 import dagger.BindsInstance
 import dagger.Component
-import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Named
 import javax.inject.Singleton
