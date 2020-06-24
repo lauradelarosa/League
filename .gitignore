@@ -85,3 +85,5 @@ lint/tmp/
 # lint/reports/
 
 /build
+.common 2.gradle.icloud
+.local 2.properties.icloud
