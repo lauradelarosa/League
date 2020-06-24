@@ -8,14 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.delarosa.common.utils.app
-import com.delarosa.common.utils.getViewModel
+import com.delarosa.common.utils.Target
+import com.delarosa.common.utils.canNavigate
 import com.delarosa.common.utils.navigateUriWithDefaultOptions
 import com.delarosa.team.databinding.FragmentTeamBinding
 import com.delarosa.team.di.TeamComponent
-import com.delarosa.team.di.TeamModule
-import com.delarosa.team.team.TeamViewModel.Companion.LEAGUE_CODE
 import kotlinx.android.synthetic.main.fragment_team.*
+import javax.inject.Inject
 
 class TeamFragment : Fragment() {
 
@@ -23,8 +22,10 @@ class TeamFragment : Fragment() {
     private lateinit var dataBindingView: FragmentTeamBinding
 
     private lateinit var component: TeamComponent
-    private val viewModelTeam by lazy { getViewModel { component.teamViewModel } }
+    //private val viewModelTeam by lazy { getViewModel { component.teamViewModel } }
 
+    @Inject
+    lateinit var viewModelTeam: TeamViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -52,9 +53,12 @@ class TeamFragment : Fragment() {
 
         viewModelTeam.navigation.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let {
-                findNavController().navigateUriWithDefaultOptions(
-                    Uri.parse("delarosa://teamdetail/${it}")
-                )
+                canNavigate(Target.TeamDetail)?.let { deepLink->
+                    findNavController().navigateUriWithDefaultOptions(
+                        Uri.parse("$deepLink$it")
+                    )
+                }
+
             }
         })
     }

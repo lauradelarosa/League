@@ -7,17 +7,20 @@ import com.delarosa.data.repository.LeagueRepository
 import com.delarosa.data.repository.TeamRepository
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
-class DataModule {
+object DataModule {
 
     @Provides
+    @Singleton
     fun teamRepositoryProvider(
         remoteTeamDataSource: RemoteTeamDataSource,
         localTeamDataSource: LocalTeamDataSource
     ) = TeamRepository(remoteTeamDataSource, localTeamDataSource)
 
     @Provides
+    @Singleton
     fun leagueRepositoryProvider(
         remoteLeagueDataSource: RemoteLeagueDataSource,
         localLeagueDataSource: LocalLeagueDataSource
@@ -25,6 +28,7 @@ class DataModule {
 
 
     @Provides
+    @Singleton
     fun eventRepositoryProvider(
         remoteEventDataSource: RemoteEventDataSource,
         localEventDataSource: LocalEventDataSource

@@ -2,18 +2,22 @@ package com.delarosa.common
 
 import android.app.Application
 import com.delarosa.common.di.CommonComponent
+import com.delarosa.common.di.ComponentProvider
 import com.delarosa.common.di.DaggerCommonComponent
+import com.delarosa.common.utils.isNull
+import java.lang.NullPointerException
 
-class App : Application() {
+class App : Application(), ComponentProvider {
 
-    lateinit var component: CommonComponent
-        private set
+    private var commonComponent: CommonComponent? = null
 
-    override fun onCreate() {
-        super.onCreate()
+    override fun getCommonComponent(): CommonComponent {
+        if (commonComponent.isNull) {
+            commonComponent = DaggerCommonComponent
+                .factory()
+                .create(this)
+        }
 
-        component = DaggerCommonComponent
-            .factory()
-            .create(this)
+        return commonComponent ?: throw NullPointerException("Common component was not found")
     }
 }

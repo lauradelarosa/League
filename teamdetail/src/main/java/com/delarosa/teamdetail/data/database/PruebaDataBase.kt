@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.delarosa.teamdetail.data.database.dao.EventDao
 import com.delarosa.teamdetail.data.database.entities.Event
 
-@Database(entities = [Event::class], version = 1)
+@Database(entities = [Event::class], version = 1,exportSchema = false)
 abstract class PruebaDataBase : RoomDatabase() {
 
     companion object {
@@ -15,7 +15,7 @@ abstract class PruebaDataBase : RoomDatabase() {
             context,
             PruebaDataBase::class.java,
             "prueba-db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     abstract fun eventDao(): EventDao

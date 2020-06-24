@@ -22,7 +22,7 @@ import javax.inject.Singleton
 
 
 @Module
-class TeamModule(private val leagueCode: String) {
+object TeamModule {
 
     @Provides
     fun teamViewModelProvider(
@@ -35,6 +35,7 @@ class TeamModule(private val leagueCode: String) {
     fun getDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
     @Provides
+    @Singleton
     fun getTeamsRepository(teamRepository: TeamRepository) =
         GetTeams(teamRepository)
 
@@ -48,12 +49,14 @@ class TeamModule(private val leagueCode: String) {
 
     @Provides
     @Singleton
-    fun retrofitTeamProvider() = RetrofitBuild(baseUrl = BuildConfig.BASE_URL).retrofit.create(TeamService::class.java)
+    fun retrofitTeamProvider():TeamService = RetrofitBuild(baseUrl = BuildConfig.BASE_URL).retrofit.create(TeamService::class.java)
 
     @Provides
+    @Singleton
     fun localTeamDataSourceProvider(db: PruebaDataBase): LocalTeamDataSource = RoomTeamDataSource(db)
 
     @Provides
+    @Singleton
     fun remoteTeamDataSourceProvider(teamService: TeamService): RemoteTeamDataSource = RemoteTeamDataSourceImpl(teamService)
 
 

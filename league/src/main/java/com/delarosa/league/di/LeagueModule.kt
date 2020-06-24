@@ -22,7 +22,7 @@ import javax.inject.Singleton
 
 
 @Module
-class LeagueModule {
+object LeagueModule {
 
     @Provides
     fun leagueViewModelProvider(getLeagues: GetLeagues, dispatcher: CoroutineDispatcher) =
@@ -32,6 +32,7 @@ class LeagueModule {
     fun getDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
     @Provides
+    @Singleton
     fun getLeagueRepository(leagueRepository: LeagueRepository) =
         GetLeagues(leagueRepository)
 
@@ -45,12 +46,14 @@ class LeagueModule {
 
     @Provides
     @Singleton
-    fun retrofitLeagueProvider() = RetrofitBuild(baseUrl = BuildConfig.BASE_URL).retrofit.create(LeagueService::class.java)
+    fun retrofitLeagueProvider():LeagueService = RetrofitBuild(baseUrl = BuildConfig.BASE_URL).retrofit.create(LeagueService::class.java)
 
     @Provides
+    @Singleton
     fun localLeagueDataSourceProvider(db: PruebaDataBase): LocalLeagueDataSource = RoomLeagueDataSource(db)
 
     @Provides
+    @Singleton
     fun remoteLeagueDataSourceProvider(leagueService: LeagueService): RemoteLeagueDataSource = RemoteLeagueDataSourceImpl(leagueService)
 
 

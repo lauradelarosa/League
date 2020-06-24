@@ -24,7 +24,7 @@ import javax.inject.Singleton
 
 
 @Module
-class TeamDetailModule(private val teamCode: String) {
+object TeamDetailModule {
 
     @Provides
     fun teamDetailViewModelProvider(
@@ -39,10 +39,12 @@ class TeamDetailModule(private val teamCode: String) {
     fun getDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
     @Provides
+    @Singleton
     fun getTeamRepository(teamRepository: TeamRepository) =
         GetTeam(teamRepository)
 
     @Provides
+    @Singleton
     fun getEventRepository(eventRepository: EventRepository) =
         GetEvents(eventRepository)
 
@@ -56,13 +58,15 @@ class TeamDetailModule(private val teamCode: String) {
 
     @Provides
     @Singleton
-    fun retrofitEventProvider() = RetrofitBuild(baseUrl = BuildConfig.BASE_URL).retrofit.create(
+    fun retrofitEventProvider() :EventService = RetrofitBuild(baseUrl = BuildConfig.BASE_URL).retrofit.create(
         EventService::class.java)
 
     @Provides
+    @Singleton
     fun localEVentDataSourceProvider(db: PruebaDataBase): LocalEventDataSource = RoomEventDataSource(db)
 
     @Provides
+    @Singleton
     fun remoteEventDataSourceProvider(eventService: EventService): RemoteEventDataSource = RemoteEventDataSourceImpl(eventService)
 
 

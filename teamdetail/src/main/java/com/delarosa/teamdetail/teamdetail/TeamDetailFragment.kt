@@ -15,13 +15,15 @@ import com.delarosa.teamdetail.di.TeamDetailComponent
 import com.delarosa.teamdetail.di.TeamDetailModule
 import com.delarosa.teamdetail.teamdetail.TeamDetailViewModel.Companion.DETAIL_CODE
 import kotlinx.android.synthetic.main.fragment_team_detail.*
+import javax.inject.Inject
 
 
 class TeamDetailFragment : Fragment() {
 
     private lateinit var adapter: EventsAdapter
     private lateinit var component: TeamDetailComponent
-    private val viewModelDetail by lazy { getViewModel { component.teamDetailViewModel } }
+    @Inject
+    lateinit var viewModelDetail: TeamDetailViewModel
 
     private lateinit var dataBindingView: FragmentTeamDetailBinding
 

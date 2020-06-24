@@ -8,7 +8,7 @@ import com.delarosa.league.data.database.dao.LeagueDao
 import com.delarosa.league.data.database.entities.League
 
 
-@Database(entities = [League::class], version = 1)
+@Database(entities = [League::class], version = 1,exportSchema = false)
 abstract class PruebaDataBase : RoomDatabase() {
 
     companion object {
@@ -16,8 +16,7 @@ abstract class PruebaDataBase : RoomDatabase() {
             context,
             PruebaDataBase::class.java,
             "prueba-db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
-
     abstract fun leagueDao(): LeagueDao
 }

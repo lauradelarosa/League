@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.delarosa.common.utils.Target
+import com.delarosa.common.utils.canNavigate
 import com.delarosa.common.utils.navigateUriWithDefaultOptions
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -25,9 +27,11 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         GlobalScope.launch {
             delay(2000)
-            view.findNavController().navigateUriWithDefaultOptions(
-                Uri.parse("delarosa://leagues")
-            )
+            canNavigate(Target.League)?.let { deepLink ->
+                view.findNavController().navigateUriWithDefaultOptions(
+                    Uri.parse(deepLink)
+                )
+            }
         }
     }
 }
