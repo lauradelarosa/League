@@ -9,7 +9,7 @@ suspend fun Fragment.getDetail(): Boolean {
     return suspendCoroutine { continuation ->
         val remoteConfig = FirebaseRemoteConfig.getInstance()
         remoteConfig.fetch(0)
-        val defaults = mapOf("team" to true)
+        val defaults = mapOf("detail_team" to true)
         remoteConfig.setDefaultsAsync(defaults)
 
         activity?.let {
