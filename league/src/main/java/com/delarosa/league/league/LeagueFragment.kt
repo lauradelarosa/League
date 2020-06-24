@@ -17,6 +17,9 @@ import com.delarosa.league.databinding.FragmentLeagueBinding
 import com.delarosa.league.di.DaggerLeagueComponent
 import com.delarosa.league.di.LeagueModule
 import kotlinx.android.synthetic.main.fragment_league.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class LeagueFragment : Fragment() {
@@ -57,9 +60,10 @@ class LeagueFragment : Fragment() {
         recycler?.adapter = adapter
         viewModelLeague.navigation.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let {
+                GlobalScope.launch(Dispatchers.IO) {
                 canNavigate(Target.Team)?.let { deepLink ->
                     navigation?.navigate("$deepLink$it")
-                }
+                }}
             }
         })
     }

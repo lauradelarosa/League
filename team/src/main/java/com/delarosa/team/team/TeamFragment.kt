@@ -17,6 +17,9 @@ import com.delarosa.team.databinding.FragmentTeamBinding
 import com.delarosa.team.di.DaggerTeamComponent
 import com.delarosa.team.di.TeamModule
 import kotlinx.android.synthetic.main.fragment_team.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TeamFragment : Fragment() {
@@ -32,7 +35,8 @@ class TeamFragment : Fragment() {
         super.onAttach(context)
         initDependencyInjection()
 
-        navigation = context as? Navigation ?: throw IllegalStateException("Context needs to implement Navigation: $context")
+        navigation = context as? Navigation
+            ?: throw IllegalStateException("Context needs to implement Navigation: $context")
     }
 
     override fun onCreateView(
@@ -58,10 +62,11 @@ class TeamFragment : Fragment() {
 
         viewModelTeam.navigation.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let {
-                canNavigate(Target.TeamDetail)?.let { deepLink ->
-                    navigation?.navigate("$deepLink$it")
+                GlobalScope.launch(Dispatchers.IO) {
+                    canNavigate(Target.TeamDetail)?.let { deepLink ->
+                        navigation?.navigate("$deepLink$it")
+                    }
                 }
-
             }
         })
     }

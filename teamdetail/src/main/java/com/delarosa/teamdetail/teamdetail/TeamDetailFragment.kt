@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.delarosa.common.di.ComponentProvider
-import com.delarosa.common.presentation.Navigation
 import com.delarosa.common.utils.startLink
 import com.delarosa.teamdetail.databinding.FragmentTeamDetailBinding
 import com.delarosa.teamdetail.di.DaggerTeamDetailComponent
