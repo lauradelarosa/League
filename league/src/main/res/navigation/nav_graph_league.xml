@@ -12,7 +12,7 @@
         android:label="league"
         tools:layout="@layout/fragment_league">
 
-        <deepLink app:uri="delarosa://leagues"/>
+        <deepLink app:uri="delarosa://league"/>
     </fragment>
 
 

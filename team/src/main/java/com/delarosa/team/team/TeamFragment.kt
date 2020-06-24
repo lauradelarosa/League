@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.delarosa.common.di.ComponentProvider
+import com.delarosa.common.presentation.Navigation
 import com.delarosa.common.utils.Target
 import com.delarosa.common.utils.canNavigate
-import com.delarosa.common.utils.navigateUriWithDefaultOptions
 import com.delarosa.team.databinding.FragmentTeamBinding
 import com.delarosa.team.di.DaggerTeamComponent
 import com.delarosa.team.di.TeamModule
@@ -23,6 +23,7 @@ class TeamFragment : Fragment() {
 
     private lateinit var adapter: TeamAdapter
     private lateinit var dataBindingView: FragmentTeamBinding
+    private var navigation: Navigation? = null
 
     @Inject
     lateinit var viewModelTeam: TeamViewModel
@@ -30,6 +31,8 @@ class TeamFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         initDependencyInjection()
+
+        navigation = context as? Navigation ?: throw IllegalStateException("Context needs to implement Navigation: $context")
     }
 
     override fun onCreateView(
@@ -55,15 +58,19 @@ class TeamFragment : Fragment() {
 
         viewModelTeam.navigation.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let {
-                canNavigate(Target.TeamDetail)?.let { deepLink->
-                    findNavController().navigateUriWithDefaultOptions(
-                        Uri.parse("$deepLink$it")
-                    )
+                canNavigate(Target.TeamDetail)?.let { deepLink ->
+                    navigation?.navigate("$deepLink$it")
                 }
 
             }
         })
     }
+
+    override fun onDetach() {
+        super.onDetach()
+        navigation = null
+    }
+
 
     private fun initDependencyInjection() =
         DaggerTeamComponent

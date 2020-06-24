@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.delarosa.common.App
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlin.properties.Delegates
 
 
@@ -68,29 +67,5 @@ val Context.app: App get() = applicationContext as App
 
 val Any?.isNull: Boolean get() = this == null
 
-enum class Target {
-    League, Team, TeamDetail
-}
 
-fun canNavigate(target: Target): String? {
-    var result: String? = null
-
-    when (target) {
-        Target.League -> result = "delarosa://league/"
-        Target.Team -> result = "delarosa://team/"
-        Target.TeamDetail -> {
-            val defaults = mapOf("detail" to true)
-            val remoteConfig = FirebaseRemoteConfig.getInstance()
-            remoteConfig.setDefaultsAsync(defaults)
-            val detail = remoteConfig.getBoolean("detail")
-
-            remoteConfig.activate()
-            remoteConfig.fetch().addOnSuccessListener {
-                if (detail)
-                    result = "delarosa://teamdetail/"
-            }
-        }
-    }
-    return result
-}
 

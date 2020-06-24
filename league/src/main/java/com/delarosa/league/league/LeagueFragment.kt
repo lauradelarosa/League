@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.delarosa.common.di.ComponentProvider
+import com.delarosa.common.presentation.Navigation
 import com.delarosa.common.utils.Target
 import com.delarosa.common.utils.canNavigate
-import com.delarosa.common.utils.navigateUriWithDefaultOptions
 import com.delarosa.league.databinding.FragmentLeagueBinding
 import com.delarosa.league.di.DaggerLeagueComponent
 import com.delarosa.league.di.LeagueModule
@@ -23,6 +23,7 @@ class LeagueFragment : Fragment() {
 
     private lateinit var adapter: LeagueAdapter
     private lateinit var dataBindingView: FragmentLeagueBinding
+    private var navigation: Navigation? = null
 
     @Inject
     lateinit var viewModelLeague: LeagueViewModel
@@ -30,6 +31,8 @@ class LeagueFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         initDependencyInjection()
+        navigation = context as? Navigation ?: throw IllegalStateException("Context needs to implement Navigation: $context")
+
     }
 
     override fun onCreateView(
@@ -55,9 +58,7 @@ class LeagueFragment : Fragment() {
         viewModelLeague.navigation.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let {
                 canNavigate(Target.Team)?.let { deepLink ->
-                    findNavController().navigateUriWithDefaultOptions(
-                        Uri.parse("$deepLink$it")
-                    )
+                    navigation?.navigate("$deepLink$it")
                 }
             }
         })
@@ -69,6 +70,12 @@ class LeagueFragment : Fragment() {
             .leagueModule(LeagueModule(this))
             .build()
             .inject(this)
+
+
+    override fun onDetach() {
+        super.onDetach()
+        navigation = null
+    }
 
 }
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.delarosa.common.di.ComponentProvider
+import com.delarosa.common.presentation.Navigation
 import com.delarosa.common.utils.startLink
 import com.delarosa.teamdetail.databinding.FragmentTeamDetailBinding
 import com.delarosa.teamdetail.di.DaggerTeamDetailComponent
@@ -27,6 +28,7 @@ class TeamDetailFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         initDependencyInjection()
+
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -60,5 +62,6 @@ class TeamDetailFragment : Fragment() {
             .teamDetailModule(TeamDetailModule(this))
             .build()
             .inject(this)
+
 
 }

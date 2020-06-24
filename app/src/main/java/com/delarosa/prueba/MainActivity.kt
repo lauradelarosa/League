@@ -1,12 +1,14 @@
 package com.delarosa.prueba
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import com.delarosa.common.presentation.Navigation
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Navigation {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +21,10 @@ class MainActivity : AppCompatActivity() {
             R.id.leagueFragment -> finish()
             else -> super.onBackPressed()
         }
+    }
+
+    override fun navigate(deepLink: String?) {
+        NavHostFragment.findNavController(navHostFragment).navigate( Uri.parse(deepLink))
     }
 }
 

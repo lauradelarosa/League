@@ -1,20 +1,33 @@
 package com.delarosa.common.utils
 
-import android.net.Uri
-import androidx.navigation.NavController
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.FragmentNavigator
-import com.delarosa.common.R
+import androidx.fragment.app.Fragment
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 
-fun createDefaultNavOptions(destination: Int) = NavOptions.Builder()
-    .setLaunchSingleTop(false)
-    .setPopUpTo(destination, false)
-    .setEnterAnim(R.anim.nav_default_enter_anim)
-    .setExitAnim(R.anim.nav_default_exit_anim)
-    .setPopEnterAnim(R.anim.nav_default_pop_enter_anim)
-    .setPopExitAnim(R.anim.nav_default_pop_exit_anim)
-    .build()
+fun Fragment.canNavigate(target: Target):String? {
+    var result: String? = null
 
-fun NavController.navigateUriWithDefaultOptions(uri: Uri, extras: FragmentNavigator.Extras? = null) {
-    this.navigate(uri, createDefaultNavOptions(this.currentDestination?.id ?: -1), extras)
+    when (target) {
+        Target.League -> result = "delarosa://league"
+        Target.Team -> result = "delarosa://team/"
+        Target.TeamDetail -> {
+            val remoteConfig = FirebaseRemoteConfig.getInstance()
+            remoteConfig.activate()
+
+            val defaults = mapOf("detail" to true)
+
+            remoteConfig.setDefaultsAsync(defaults)
+            val detail = remoteConfig.getBoolean("detail")
+
+
+            remoteConfig.fetch().addOnSuccessListener {
+                if (detail)
+                    result = "delarosa://teamdetail/"
+            }
+        }
+    }
+    return  result
+}
+
+enum class Target {
+    League, Team, TeamDetail
 }
