@@ -18,6 +18,7 @@ import com.delarosa.team.team.TeamViewModel
 import com.delarosa.usecases.GetTeams
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Named
@@ -43,16 +44,13 @@ class TeamModule(private val fragment: TeamFragment) {
             TeamViewModel(leagueCode, getTeams, coroutineDispatcher)
         }
 
-    @Provides
-    fun getDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
     @Provides
-    @Singleton
     fun getTeamsRepository(teamRepository: TeamRepository) =
         GetTeams(teamRepository)
 
     @Provides
-    @Singleton
+    @Named("team-db")
     fun databaseProvider(app: Application) = Room.databaseBuilder(
         app,
         PruebaDataBase::class.java,
@@ -60,19 +58,24 @@ class TeamModule(private val fragment: TeamFragment) {
     ).build()
 
     @Provides
-    @Singleton
+    @Named("retrofit-team")
     fun retrofitTeamProvider(): TeamService =
         RetrofitBuild(baseUrl = BuildConfig.BASE_URL).retrofit.create(TeamService::class.java)
 
     @Provides
-    @Singleton
-    fun localTeamDataSourceProvider(db: PruebaDataBase): LocalTeamDataSource =
+    fun localTeamDataSourceProvider(@Named("team-db") db: PruebaDataBase): LocalTeamDataSource =
         RoomTeamDataSource(db)
 
     @Provides
-    @Singleton
-    fun remoteTeamDataSourceProvider(teamService: TeamService): RemoteTeamDataSource =
+    fun remoteTeamDataSourceProvider( @Named("retrofit-team") teamService: TeamService): RemoteTeamDataSource =
         RemoteTeamDataSourceImpl(teamService)
+
+    @Provides
+    @Named("team-repository")
+    fun teamRepositoryProvider(
+        remoteTeamDataSource: RemoteTeamDataSource,
+        localTeamDataSource: LocalTeamDataSource
+    ) = TeamRepository(remoteTeamDataSource, localTeamDataSource)
 
 
 }

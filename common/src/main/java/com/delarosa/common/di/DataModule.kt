@@ -8,31 +8,16 @@ import com.delarosa.data.repository.TeamRepository
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
 class DataModule {
 
-    @Reusable
     @Provides
-    fun teamRepositoryProvider(
-        remoteTeamDataSource: RemoteTeamDataSource,
-        localTeamDataSource: LocalTeamDataSource
-    ) = TeamRepository(remoteTeamDataSource, localTeamDataSource)
-
-    @Provides
-    @Reusable
-    fun leagueRepositoryProvider(
-        remoteLeagueDataSource: RemoteLeagueDataSource,
-        localLeagueDataSource: LocalLeagueDataSource
-    ) = LeagueRepository(remoteLeagueDataSource, localLeagueDataSource)
+    fun getDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
 
-    @Provides
-    @Reusable
-    fun eventRepositoryProvider(
-        remoteEventDataSource: RemoteEventDataSource,
-        localEventDataSource: LocalEventDataSource
-    ) = EventRepository(remoteEventDataSource, localEventDataSource)
 
 }

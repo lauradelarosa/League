@@ -18,6 +18,7 @@ import com.delarosa.league.league.LeagueViewModel
 import com.delarosa.usecases.GetLeagues
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Named
@@ -36,14 +37,11 @@ class LeagueModule(private val fragment: LeagueFragment) {
         }
 
     @Provides
-    fun getDispatcher(): CoroutineDispatcher = Dispatchers.Main
-
-    @Provides
     fun getLeagueRepository(leagueRepository: LeagueRepository) =
         GetLeagues(leagueRepository)
 
     @Provides
-    @Singleton
+    @Named("league-db")
     fun databaseProvider(app: Application) = Room.databaseBuilder(
         app,
         PruebaDataBase::class.java,
@@ -51,19 +49,22 @@ class LeagueModule(private val fragment: LeagueFragment) {
     ).build()
 
     @Provides
-    @Singleton
+    @Named("retrofit-league")
     fun retrofitLeagueProvider(): LeagueService =
         RetrofitBuild(baseUrl = BuildConfig.BASE_URL).retrofit.create(LeagueService::class.java)
 
     @Provides
-    @Singleton
-    fun localLeagueDataSourceProvider(db: PruebaDataBase): LocalLeagueDataSource =
+    fun localLeagueDataSourceProvider(  @Named("league-db") db: PruebaDataBase): LocalLeagueDataSource =
         RoomLeagueDataSource(db)
 
     @Provides
-    @Singleton
-    fun remoteLeagueDataSourceProvider(leagueService: LeagueService): RemoteLeagueDataSource =
+    fun remoteLeagueDataSourceProvider( @Named("retrofit-league") leagueService: LeagueService): RemoteLeagueDataSource =
         RemoteLeagueDataSourceImpl(leagueService)
 
+    @Provides
+    fun leagueRepositoryProvider(
+        remoteLeagueDataSource: RemoteLeagueDataSource,
+        localLeagueDataSource: LocalLeagueDataSource
+    ) = LeagueRepository(remoteLeagueDataSource, localLeagueDataSource)
 
 }

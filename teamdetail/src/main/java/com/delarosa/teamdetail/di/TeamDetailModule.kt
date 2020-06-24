@@ -7,7 +7,9 @@ import com.delarosa.common.BuildConfig
 import com.delarosa.common.common.RetrofitBuild
 import com.delarosa.common.utils.getViewModel
 import com.delarosa.data.datasource.LocalEventDataSource
+import com.delarosa.data.datasource.LocalTeamDataSource
 import com.delarosa.data.datasource.RemoteEventDataSource
+import com.delarosa.data.datasource.RemoteTeamDataSource
 import com.delarosa.data.repository.EventRepository
 import com.delarosa.data.repository.TeamRepository
 import com.delarosa.teamdetail.data.database.PruebaDataBase
@@ -21,6 +23,7 @@ import com.delarosa.usecases.GetTeam
 import com.delarosa.usecases.GetTeams
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Named
@@ -47,21 +50,17 @@ class TeamDetailModule(private val fragment: TeamDetailFragment) {
             TeamDetailViewModel(detailCode, getTeam, getEvents, coroutineDispatcher)
         }
 
-    @Provides
-    fun getDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
     @Provides
-    @Singleton
     fun getTeamRepository(teamRepository: TeamRepository) =
         GetTeam(teamRepository)
 
     @Provides
-    @Singleton
     fun getEventRepository(eventRepository: EventRepository) =
         GetEvents(eventRepository)
 
     @Provides
-    @Singleton
+    @Named("teamdetail-db")
     fun databaseProvider(app: Application) = Room.databaseBuilder(
         app,
         PruebaDataBase::class.java,
@@ -69,21 +68,33 @@ class TeamDetailModule(private val fragment: TeamDetailFragment) {
     ).build()
 
     @Provides
-    @Singleton
+    @Named("retrofit-event")
     fun retrofitEventProvider(): EventService =
         RetrofitBuild(baseUrl = BuildConfig.BASE_URL).retrofit.create(
             EventService::class.java
         )
 
     @Provides
-    @Singleton
-    fun localEVentDataSourceProvider(db: PruebaDataBase): LocalEventDataSource =
+    fun localEVentDataSourceProvider(@Named("teamdetail-db") db: PruebaDataBase): LocalEventDataSource =
         RoomEventDataSource(db)
 
     @Provides
-    @Singleton
-    fun remoteEventDataSourceProvider(eventService: EventService): RemoteEventDataSource =
+    fun remoteEventDataSourceProvider(@Named("retrofit-event") eventService: EventService): RemoteEventDataSource =
         RemoteEventDataSourceImpl(eventService)
+
+
+    @Provides
+    fun eventRepositoryProvider(
+        remoteEventDataSource: RemoteEventDataSource,
+        localEventDataSource: LocalEventDataSource
+    ) = EventRepository(remoteEventDataSource, localEventDataSource)
+
+    @Named("team-repository-event")
+    @Provides
+    fun teamRepositoryProvider(
+        remoteTeamDataSource: RemoteTeamDataSource,
+        localTeamDataSource: LocalTeamDataSource
+    ) = TeamRepository(remoteTeamDataSource, localTeamDataSource)
 
 
 }
