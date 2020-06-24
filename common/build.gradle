@@ -1,10 +1,9 @@
 apply plugin: 'com.android.library'
 apply from: "$rootProject.projectDir/common.gradle"
-apply plugin: 'com.google.gms.google-services'
+
 
 dependencies {
     implementation 'com.google.firebase:firebase-config-ktx:19.1.4'
     implementation 'com.google.firebase:firebase-analytics-ktx:17.4.3'
 
-    implementation 'com.google.firebase:firebase-config:19.1.4'
 }

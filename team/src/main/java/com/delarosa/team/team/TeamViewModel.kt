@@ -45,7 +45,5 @@ class TeamViewModel(
         _navigation.value = Event(team.code)
     }
 
-    companion object {
-        val LEAGUE_CODE = "league_code"
-    }
+
 }

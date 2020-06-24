@@ -1,5 +1,6 @@
 package com.delarosa.league.league
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,10 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.delarosa.common.di.ComponentProvider
 import com.delarosa.common.utils.*
 import com.delarosa.common.utils.Target
 import com.delarosa.league.databinding.FragmentLeagueBinding
-import com.delarosa.league.di.LeagueComponent
+import com.delarosa.league.di.DaggerLeagueComponent
 import com.delarosa.league.di.LeagueModule
 import kotlinx.android.synthetic.main.fragment_league.*
 import javax.inject.Inject
@@ -20,14 +22,19 @@ class LeagueFragment : Fragment() {
 
     private lateinit var adapter: LeagueAdapter
     private lateinit var dataBindingView: FragmentLeagueBinding
-    private lateinit var component: LeagueComponent
 
     @Inject
     lateinit var viewModelLeague: LeagueViewModel
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        initDependencyInjection()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+
         dataBindingView = FragmentLeagueBinding.inflate(inflater, container, false).apply {
             viewModel = viewModelLeague
         }
@@ -36,9 +43,6 @@ class LeagueFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        context?.let {
-            //component = it.app.component.plusLeague(LeagueModule())
-        }
         dataBindingView.lifecycleOwner = this.viewLifecycleOwner
     }
 
@@ -57,7 +61,13 @@ class LeagueFragment : Fragment() {
             }
         })
     }
-
+    private fun initDependencyInjection() =
+        DaggerLeagueComponent
+            .builder()
+            .commonComponent((activity!!.application as ComponentProvider).getCommonComponent())
+            .leagueModule(LeagueModule(this))
+            .build()
+            .inject(this)
 
 }
 
