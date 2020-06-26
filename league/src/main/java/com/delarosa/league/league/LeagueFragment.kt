@@ -55,7 +55,7 @@ class LeagueFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = LeagueAdapter(viewModelLeague::onItemClicked)
-        recycler?.adapter = adapter
+        recycler_league?.adapter = adapter
         viewModelLeague.navigation.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let {
                 GlobalScope.launch(Dispatchers.IO) {

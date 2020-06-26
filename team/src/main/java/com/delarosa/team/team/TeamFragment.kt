@@ -56,7 +56,7 @@ class TeamFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = TeamAdapter(viewModelTeam::onItemClicked)
-        recycler?.adapter = adapter
+        recycler_team?.adapter = adapter
 
         viewModelTeam.navigation.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let {
