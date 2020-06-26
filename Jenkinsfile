@@ -26,11 +26,6 @@ pipeline {
               sh './gradlew common:clean common:test --stacktrace'
         }
      }
-    stage('Unit Test TeamDetail') {
-        steps {
-               sh './gradlew teamdetail:clean teamdetail:test --stacktrace'
-         }
-      }
     stage('Unit Test Team') {
          steps {
                 sh './gradlew team:clean team:test --stacktrace'
@@ -41,5 +36,10 @@ pipeline {
                 sh './gradlew league:clean league:test --stacktrace'
           }
     }
+    stage('Unit Test TeamDetail') {
+         steps {
+                sh './gradlew teamdetail:clean teamdetail:test --stacktrace'
+          }
+       }
   }
 }
