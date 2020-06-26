@@ -22,4 +22,4 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Data-Domain Unit Tests
-      run: ./gradlew usecases:clean usecases:test ./gradlew usecases:clean usecases:test  --stacktrace
+      run: ./gradlew usecases:clean usecases:test usecases:clean usecases:test  --stacktrace
