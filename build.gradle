@@ -80,6 +80,7 @@ allprojects {
                 rules        : 'androidx.test:rules:1.2.0',
                 extJunit     : 'androidx.test.ext:junit-ktx:1.1.1',
                 mockWebServer: 'com.squareup.okhttp3:mockwebserver:4.2.1',
+                uiAutomator  : "androidx.test.uiautomator:uiautomator:2.2.0",
                 okhttpIdling : 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
         ]
 
