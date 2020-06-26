@@ -1,4 +1,4 @@
-package com.delarosa.prueba.datasources
+package com.delarosa.common.datasources
 
 import com.delarosa.data.datasource.LocalTeamDataSource
 import com.delarosa.domain.Team

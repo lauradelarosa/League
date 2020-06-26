@@ -4,23 +4,18 @@ import com.delarosa.data.datasource.LocalLeagueDataSource
 import com.delarosa.data.datasource.RemoteLeagueDataSource
 import com.delarosa.data.repository.LeagueRepository
 import com.delarosa.testshared.mockedLeague
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.coEvery
+import io.mockk.mockk
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class LeagueRepositoryTest {
 
-    @Mock
-    lateinit var remoteLeagueDataSource: RemoteLeagueDataSource
+    private val remoteLeagueDataSource: RemoteLeagueDataSource = mockk()
 
-    @Mock
-    lateinit var localLeagueDataSource: LocalLeagueDataSource
+    private val localLeagueDataSource: LocalLeagueDataSource = mockk()
 
     lateinit var leagueRepository: LeagueRepository
 
@@ -36,9 +31,14 @@ class LeagueRepositoryTest {
     fun `remote league calls remoteLeagueDataSource `() {
         runBlocking {
             val remoteLeagues = listOf(mockedLeague.copy())
-            whenever(localLeagueDataSource.isNotComplete()).thenReturn(true)
-            whenever(remoteLeagueDataSource.getLeague("123")).thenReturn(ResultData.Success(remoteLeagues))
-            whenever(localLeagueDataSource.getLeagues()).thenReturn(remoteLeagues)
+            coEvery { localLeagueDataSource.isNotComplete() } returns (true)
+            coEvery { remoteLeagueDataSource.getLeague("123") } returns (
+                    ResultData.Success(
+                        remoteLeagues
+                    )
+                    )
+            coEvery { localLeagueDataSource.saveLeague(remoteLeagues) } returns (Unit)
+            coEvery { localLeagueDataSource.getLeagues() } returns (remoteLeagues)
             when (val result = leagueRepository.getLeague("123")) {
                 is ResultData.Success -> assertEquals(remoteLeagues, result.data)
             }

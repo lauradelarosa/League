@@ -2,20 +2,16 @@ package com.delarosa.usecases
 
 import com.delarosa.data.repository.TeamRepository
 import com.delarosa.testshared.mockedTeam
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class GetTeamTest {
 
-    @Mock
-    lateinit var teamRepository: TeamRepository
+    private val teamRepository: TeamRepository = mockk()
 
     lateinit var getTeam: GetTeam
 
@@ -29,7 +25,7 @@ class GetTeamTest {
     fun `invoke calls team repository`() {
         runBlocking {
             val team = mockedTeam.copy()
-            whenever(teamRepository.findById(team.code)).thenReturn(team)
+            coEvery { teamRepository.findById(team.code) } returns (team)
             Assert.assertEquals(team, getTeam.invoke(team.code))
         }
     }

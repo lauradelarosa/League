@@ -5,25 +5,22 @@ import com.delarosa.data.datasource.RemoteEventDataSource
 import com.delarosa.data.repository.EventRepository
 import com.delarosa.testshared.mockedEvent
 import com.delarosa.testshared.mockedTeam
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.coEvery
+import io.mockk.mockk
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
+
 class EventRepositoryTest {
 
-    @Mock
-    lateinit var remoteEventDataSource: RemoteEventDataSource
+    private val remoteEventDataSource: RemoteEventDataSource = mockk()
 
-    @Mock
-    lateinit var localEventDataSource: LocalEventDataSource
 
-    lateinit var eventRepository: EventRepository
+    private val localEventDataSource: LocalEventDataSource = mockk()
+
+    private lateinit var eventRepository: EventRepository
 
     @Before
     fun setUp() {
@@ -31,15 +28,19 @@ class EventRepositoryTest {
     }
 
     @Test
-    fun `remote event calls remoteEventeDataSource `() {
+    fun `remote event calls remoteEventDataSource `() {
         runBlocking {
             val remoteEvents = listOf(mockedEvent.copy())
             val team = mockedTeam.copy(id = 1)
-            whenever(localEventDataSource.isEmpty(team.code)).thenReturn(true)
-            whenever(remoteEventDataSource.getEvents(team.code)).thenReturn(
-                ResultData.Success(remoteEvents)
-            )
-            whenever(localEventDataSource.getEvents()).thenReturn(remoteEvents)
+
+            coEvery { localEventDataSource.isEmpty(team.code) } returns (true)
+
+            coEvery { remoteEventDataSource.getEvents(team.code) } returns (ResultData.Success(remoteEvents))
+
+            coEvery { localEventDataSource.saveEvents(remoteEvents) } returns (Unit)
+
+            coEvery { localEventDataSource.getEvents() } returns (remoteEvents)
+
             when (val result = eventRepository.getEvents(team.code)) {
                 is ResultData.Success -> assertEquals(remoteEvents, result.data)
             }

@@ -1,14 +1,12 @@
 package com.delarosa.team.team
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.delarosa.common.di.ComponentProvider
 import com.delarosa.common.presentation.Navigation
 import com.delarosa.common.utils.Target
